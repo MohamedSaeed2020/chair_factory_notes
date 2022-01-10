@@ -1,4 +1,4 @@
-import 'package:chair_factory_notes/business_layer/app_cubit/app_cubit.dart';
+import 'package:chair_factory_notes/business_logic/app_cubit/app_cubit.dart';
 import 'package:chair_factory_notes/presentation/widgets/note_image_picker.dart';
 import 'package:chair_factory_notes/shared/components/components.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';

@@ -1,4 +1,4 @@
-import 'package:chair_factory_notes/business_layer/app_cubit/app_cubit.dart';
+import 'package:chair_factory_notes/business_logic/app_cubit/app_cubit.dart';
 import 'package:chair_factory_notes/data/models/note_model.dart';
 import 'package:chair_factory_notes/presentation/widgets/note_list_builder.dart';
 import 'package:flutter/material.dart';
