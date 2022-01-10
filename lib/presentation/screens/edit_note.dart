@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:chair_factory_notes/business_layer/app_cubit/app_cubit.dart';
+import 'package:chair_factory_notes/data/models/note_model.dart';
 import 'package:chair_factory_notes/shared/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,7 @@ class EditNote extends StatelessWidget {
   EditNote({Key? key, required this.notesModel}) : super(key: key);
 
   //variables
-  final Map notesModel;
+  final Note notesModel;
   final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -27,10 +28,10 @@ class EditNote extends StatelessWidget {
       body: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
           //Get fields data from database
-          titleController.text = notesModel['title'];
-          descriptionController.text = notesModel['description'];
-          dateController.text = notesModel['date'];
-          timeController.text = notesModel['time'];
+          titleController.text = notesModel.noteTitle;
+          descriptionController.text = notesModel.noteDescription;
+          dateController.text = notesModel.noteDate;
+          timeController.text = notesModel.noteTime;
           var noteImage = cubit.noteImage;
 
           return SingleChildScrollView(
@@ -61,7 +62,7 @@ class EditNote extends StatelessWidget {
                           child: CircleAvatar(
                             radius: 60.0,
                             backgroundImage: noteImage == null
-                                ? FileImage(File(notesModel['image']))
+                                ? FileImage(File(notesModel.image))
                                 : FileImage(noteImage),
                           ),
                         ),
@@ -186,9 +187,9 @@ class EditNote extends StatelessWidget {
                                 title: titleController.text,
                                 description: descriptionController.text,
                                 image: noteImage == null
-                                    ? notesModel['image']
+                                    ? notesModel.image
                                     : noteImage.path,
-                                id: notesModel['id'],
+                                id: notesModel.noteId,
                               );
                             }
                           },

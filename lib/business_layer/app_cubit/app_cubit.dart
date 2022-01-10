@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:chair_factory_notes/data/models/note_model.dart';
 import 'package:chair_factory_notes/presentation/screens/home_screen.dart';
 import 'package:chair_factory_notes/presentation/screens/inspected_chairs.dart';
 import 'package:chair_factory_notes/presentation/screens/new_note.dart';
@@ -23,8 +24,9 @@ class AppCubit extends Cubit<AppState> {
   ];
   List<String> titles = ["New Note", "Inspected Chairs"];
   Database? database;
-  List<Map> newNotes = [];
-  List<Map> inspectedChairs = [];
+  List<Note> allNotes = [];
+  List<Note> newNotes = [];
+  List<Note> inspectedChairs = [];
   bool isBottomSheetShown = false;
   IconData fabIcon = Icons.edit;
   File? noteImage;
@@ -94,19 +96,22 @@ class AppCubit extends Cubit<AppState> {
 
   void getDataFromDatabase(database) {
     newNotes = [];
+    allNotes = [];
     inspectedChairs = [];
     emit(GetDatabaseLoadingState());
-    database!.rawQuery('SELECT * FROM notes').then((value) {
-      if (value.isNotEmpty) {
-        debugPrint("Database hase been returned successfully! $value");
-        value.forEach((element) {
-          if (element['status'] == 'Open') {
-            newNotes.add(element);
+    database!.rawQuery('SELECT * FROM notes').then((List<dynamic> notes) {
+      if (notes.isNotEmpty) {
+        debugPrint("Database hase been returned successfully! $notes");
+        allNotes = notes.map((note) {
+          return Note.fromJsom(note);
+        }).toList();
+        for (var note in allNotes) {
+          if (note.noteStatus == 'Open') {
+            newNotes.add(note);
           } else {
-            //status is closed
-            inspectedChairs.add(element);
+            inspectedChairs.add(note);
           }
-        });
+        }
       }
       emit(GetDatabaseSuccessState());
     });
@@ -163,7 +168,7 @@ class AppCubit extends Cubit<AppState> {
       showToast('Note Updated Successfully', ToastStates.success);
       debugPrint("Database hase been updated successfully! $value");
     }).whenComplete(() {
-      navigateAndFinish(context, Home());
+      navigateAndFinish(context, const Home());
       removeNoteImage();
     });
   }

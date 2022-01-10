@@ -1,11 +1,12 @@
 import 'package:chair_factory_notes/business_layer/app_cubit/app_cubit.dart';
+import 'package:chair_factory_notes/data/models/note_model.dart';
 import 'package:chair_factory_notes/presentation/widgets/build_note_item.dart';
 import 'package:chair_factory_notes/presentation/widgets/no_notes.dart';
 import 'package:flutter/material.dart';
 
 class NoteListBuilder extends StatelessWidget {
   //variables
-  final List<Map> notes;
+  final List<Note> notes;
   final String noteStatus;
 
   const NoteListBuilder(
@@ -25,7 +26,7 @@ class NoteListBuilder extends StatelessWidget {
               context: context,
               onClosedPressed: () {
                 AppCubit.get(context).updateNoteStatusDatabase(
-                    status: 'Closed', id: notes[index]['id']);
+                    status: 'Closed', id: notes[index].noteId);
               },
               closedIcon: Icons.lock_open,
             );

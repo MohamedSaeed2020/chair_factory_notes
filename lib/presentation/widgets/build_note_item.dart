@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:chair_factory_notes/business_layer/app_cubit/app_cubit.dart';
+import 'package:chair_factory_notes/data/models/note_model.dart';
 import 'package:chair_factory_notes/presentation/screens/edit_note.dart';
 import 'package:flutter/material.dart';
 
 class NoteItemBuilder extends StatelessWidget {
-  final Map notesModel;
+  final Note notesModel;
   final BuildContext context;
   final Function()? onClosedPressed;
   final IconData? closedIcon;
@@ -28,9 +29,9 @@ class NoteItemBuilder extends StatelessWidget {
             ));
       },
       child: Dismissible(
-        key: Key(notesModel['id'].toString()),
+        key: Key(notesModel.noteId.toString()),
         onDismissed: (direction) {
-          AppCubit.get(context).deleteDatabase(id: notesModel['id']);
+          AppCubit.get(context).deleteDatabase(id: notesModel.noteId);
         },
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -44,7 +45,7 @@ class NoteItemBuilder extends StatelessWidget {
                   CircleAvatar(
                     radius: 15.0,
                     child: Text(
-                      "${notesModel['id']}",
+                      "${notesModel.noteId}",
                     ),
                   ),
                   const SizedBox(
@@ -57,7 +58,7 @@ class NoteItemBuilder extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                       image: DecorationImage(
                         image: FileImage(
-                          File("${notesModel['image']}"),
+                          File(notesModel.image),
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -72,7 +73,7 @@ class NoteItemBuilder extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${notesModel['title']}",
+                          notesModel.noteTitle,
                           style: const TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,
@@ -81,7 +82,7 @@ class NoteItemBuilder extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          "${notesModel['description']}",
+                          notesModel.noteDescription,
                           style: const TextStyle(
                             fontSize: 16.0,
                           ),
@@ -89,7 +90,7 @@ class NoteItemBuilder extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          "${notesModel['time']}, ${notesModel['date']}",
+                          "${notesModel.noteTime}, ${notesModel.noteDate}",
                           style: const TextStyle(
                             color: Colors.grey,
                           ),
@@ -97,7 +98,7 @@ class NoteItemBuilder extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          "${notesModel['status']}",
+                          notesModel.noteStatus,
                           style: const TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,
